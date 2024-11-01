@@ -1,7 +1,3 @@
-#define bool unsigned int
-#define true 1
-#define false 0
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -14,7 +10,7 @@ typedef struct node{
     
     void (* insert)(struct node * , int , struct node *);
     void (* delete)(struct node * , int , struct node *);
-    bool (* research)(struct node * , int);
+    short int (* research)(struct node * , int , struct node *);
 }node;
 
 
@@ -82,12 +78,39 @@ void delete(node *head , int val , node *tail){
 
 }
 
-bool research(node *head , int val){
 
+short int research(node *head , int val , node *tail){
 
-    if(val < head->value )
+    if(val < head->next->value && val > tail->prev->value){
+        return 0;
+    }
+    node *p , *q ;
 
-    return false;
+    p = head->next;
+    q = tail->prev;
+
+    while( p != q ){
+        if(val == p->value || val == q->value){
+            return 1;
+        }
+
+        p = p->next->next;
+        q = q->prev->prev;
+        if(val < p->value || val > q->value ){
+            p = p->prev;
+            q = q->next;
+            if(val != p->value && val != q->value){
+                return 0;
+            }
+            else{
+            return 1;
+        
+            }
+        }
+        
+    }
+
+    return 1;
 }
 
 void print(node *head){
@@ -138,6 +161,49 @@ int main(){
 
     print(head);
     printf("\n%d\n",tail->prev->value);
+
+    if(research(head , 2 , tail) == 1){
+        printf("\n element 2 exists\n");
+    }
+    else{
+        printf("\nelement 2 does not exist\n");
+    }
+
+
+    if(research(head , 3 , tail) == 1){
+        printf("\n element 3 exists\n");
+    }
+    else{
+        printf("\nelement  3 does not exist\n");
+    }
+
+    if(research(head , 4 , tail) == 1){
+        printf("\n element 4 exists\n");
+    }
+    else{
+        printf("\nelement 4 does not exist\n");
+    }
+
+    if(research(head , 7 , tail) == 1){
+        printf("\n element 7 exists\n");
+    }
+    else{
+        printf("\nelement 7 does not exist\n");
+    }
+
+    if(research(head , 6 , tail) == 1){
+        printf("\n element 6 exists\n");
+    }
+    else{
+        printf("\nelement 6 does not exist\n");
+    }
+
+    if(research(head , 9 , tail) == 1){
+        printf("\n element 9 exists\n");
+    }
+    else{
+        printf("\nelement  9 does not exist\n");
+    }
 
     return 0;
 }
